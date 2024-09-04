@@ -35,7 +35,7 @@ BBLAYERS += "path/to/meta-openembedded/meta-oe"
 -
 Add OpenJDK 8 JRE to your Yocto image:
 ```
-IMAGE_INSTALL_append = " openjdk-8-jre"
+IMAGE_INSTALL:append = " openjdk-8-jre" // this has a problem
 ```
 Why OpenJDK 8?
 -
@@ -47,7 +47,7 @@ Suitable for embedded systems due to its balance between performance and resourc
 -
 Install GStreamer for media playback:
 ```
-IMAGE_INSTALL_append = " gstreamer1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad"
+IMAGE_INSTALL_append = " gstreamer1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad" // this has a problem
 ```
 Install ALSA for audio management:
 ```
@@ -57,11 +57,19 @@ IMAGE_INSTALL_append = " alsa-utils"
 3.1 LIRC for IR Remote Control
 -
 Install LIRC to handle IR remote control signals:
+
+To interact with your JavaFX GUI using a remote control with an IR sensor, you can map the IR remote's signals to key events, similar to how you would handle keyboard inputs
+
+You'll need to interface the IR sensor with your embedded Linux system to capture the remote control signals.
+
+This can be done using an IR receiver module and a library like LIRC (Linux Infrared Remote Control) to decode the signals into recognizable inputs.
+
+Configure LIRC to map specific IR signals to keyboard key events. This allows you to send keypresses to your JavaFX application when specific buttons on the remote are pressed.
 ```
 IMAGE_INSTALL_append = " lirc"
 ```
 Configure LIRC for your specific remote control:
-Create LIRC configuration files mapping remote control buttons to corresponding key presses or commands.
+Create LIRC configuration files mapping remote control buttons to corresponding key presses .
 Ensure these configurations are included in your Yocto image.
 
 3.2 Hardware Setup

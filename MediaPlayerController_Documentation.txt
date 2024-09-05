@@ -1,0 +1,62 @@
+
+Media Player Controller Documentation
+====================================
+
+Overview:
+---------
+This class `MediaPlayerController` is part of a media player application built using JavaFX. It handles media file playback, volume control, progress tracking, and navigation through media files. The user can control playback using keyboard input and media control buttons in the UI.
+
+Key Functionalities:
+--------------------
+1. **Initialization (`initialize` method)**:
+   - The `initialize` method is called when the controller is first created. 
+   - The method scans a directory (hardcoded as "music") for files and adds them to a list of songs (`ArrayList<File>`).
+   - The first song from the list is loaded into a `MediaPlayer` object and set to the `MediaView`, which is responsible for displaying video or audio visualization.
+   - The media view's width and height are bound to the scene dimensions to adjust size dynamically.
+   - Volume slider control is initialized, allowing the user to control the media volume.
+   - The `progressBar` is bound to track the current playback time of the media.
+   - A key event handler is added to the pane for controlling media playback using keyboard shortcuts.
+
+2. **Keyboard Controls (Handled in `handle` method inside `setOnKeyPressed`)**:
+   - Spacebar: Play/pause media.
+   - Left Arrow: Rewind 5 seconds.
+   - Right Arrow: Fast forward 5 seconds.
+   - Up/Down Arrow: Increase/decrease volume by 10%.
+   - 'S': Stop media.
+   - 'N': Play the next media file.
+   - 'P': Play the previous media file.
+
+3. **Volume Slider (`volumeSlider` listener)**:
+   - This listener adjusts the media player's volume when the user interacts with the slider.
+
+4. **Progress Bar (`progressBar` listener)**:
+   - The progress bar reflects the current playback time of the media file and updates in real-time.
+
+5. **Media Control Buttons**:
+   - `playVideo(ActionEvent event)`: Plays the current media file.
+   - `pauseVideo(ActionEvent event)`: Pauses the media file.
+   - `stopVideo(ActionEvent event)`: Stops the media playback.
+   - `skip5(ActionEvent event)`: Fast forwards 5 seconds.
+   - `back5(ActionEvent event)`: Rewinds 5 seconds.
+   - `NextVideo(ActionEvent event)`: Skips to the next media file and plays it.
+   - `PrevVideo(ActionEvent event)`: Moves to the previous media file and plays it.
+
+6. **Helper Methods**:
+   - `stopvideo()`: Stops the media playback.
+   - `pausevideo()`: Pauses the media playback.
+   - `playVideo()`: Plays the media. It also sets the progress bar to the media’s duration.
+   - `skip5_p()`: Skips 5 seconds ahead in the media.
+   - `back5_p()`: Rewinds 5 seconds.
+   - `nextvideo()`: Loads and plays the next media file in the list.
+   - `PrevVideo()`: Loads and plays the previous media file in the list.
+
+7. **Media Playback Flow**:
+   - When a song is played, its name is displayed.
+   - When the song finishes, users can navigate to the next or previous song using the corresponding buttons or keyboard shortcuts.
+
+Additional Details:
+-------------------
+- The media directory is hardcoded as "music", and all files in that directory are considered media files.
+- The app supports media controls using both UI buttons and keyboard shortcuts.
+- The media player is flexible and adjusts its size based on the scene dimensions.
+- The pane is focus-traversable to ensure it captures keyboard events.

@@ -9,10 +9,15 @@ This project involves developing a Music Player application controlled by a remo
 -
 Clone the Yocto Project sources and set up the Raspberry Pi layers:
 ```
-git clone git://git.yoctoproject.org/poky
+mkdir yocto
+cd yocto
+git clone -b kirkstone https://git.yoctoproject.org/git/poky
 cd poky
-git clone git://git.openembedded.org/meta-openembedded
-git clone git://git.yoctoproject.org/meta-raspberrypi
+git clone -b kirkstone https://github.com/agherzan/meta-raspberrypi.git
+git clone -b kirkstone https://github.com/openembedded/meta-openembedded.git
+git clone -b kirkstone https://github.com/meta-java/meta-java.git
+
+
 ```
 1.2 Configure the Build
 -
@@ -22,26 +27,54 @@ source oe-init-build-env
 ```
 In conf/local.conf, set the machine to Raspberry Pi 4:
 ```
-MACHINE = "raspberrypi4-64"
+MACHINE = "raspberrypi4"
 ```
 Add the necessary layers in bblayers.conf:
 
 ```
-BBLAYERS += "path/to/meta-raspberrypi"
-BBLAYERS += "path/to/meta-openembedded/meta-oe"
+BBLAYERS ?= " \
+  /home/yasmen/yocto/poky/meta \
+  /home/yasmen/yocto/poky/meta-poky \
+  /home/yasmen/yocto/poky/meta-yocto-bsp \
+  /home/yasmen/yocto/poky/meta-raspberrypi \
+  /home/yasmen/yocto/poky/meta-openembedded/meta-oe \
+  /home/yasmen/yocto/poky/meta-java \
+  /home/yasmen/yocto/poky/meta-openembedded/meta-multimedia \
+  /home/yasmen/yocto/poky/meta-openembedded/meta-python \
+  /home/yasmen/yocto/poky/meta-openembedded/meta-networking \
+  /home/yasmen/yocto/poky/meta-openembedded/meta-gnome \
+  /home/yasmen/yocto/poky/meta-openembedded/meta-xfce \	
+  /home/yasmen/yocto/meta-custom-rpi4 \
+  "
 ```
 # 2. Software Installation
 2.1 Java Runtime Environment
 -
 Add OpenJDK 8 JRE to your Yocto image:
 ```
-IMAGE_INSTALL:append = " openjdk-8-jre" // this has a problem
+IMAGE_INSTALL:append = " openjdk-8" // this has many warnings 31
 ```
+https://community.nxp.com/t5/i-MX-Processors-Knowledge-Base/How-to-add-openjdk-to-Yocto-Layers/ta-p/1128283
+```
+bitbake -k myimage
+cd tmp
+cd deploy/
+cd images/
+cd raspberrypi4/
+ls | grep sdi
+du -sh myimage-raspberrypi4-20240905143444.rootfs.rpi-sdimg
+sudo dd if=myimage-raspberrypi4-20240905143444.rootfs.rpi-sdimg of=/dev/sdb bs=4M status=progress
+```
+![image](https://github.com/user-attachments/assets/f85e3322-b174-4838-970a-890e4da7b96b)
+
+
 Why OpenJDK 8?
 -
 Provides a stable and efficient Java Runtime Environment.
 Ensures compatibility with JavaFX or Swing-based GUI applications.
 Suitable for embedded systems due to its balance between performance and resource usage.
+
+The error you're encountering is likely due to missing JavaFX libraries in your environment. Starting from JDK 11, JavaFX is no longer bundled with the JDK, and needs to be included separately. However, since you're using JDK 8, JavaFX should be bundled, but it seems that the runtime environment isn't correctly locating the JavaFX classes
 
 2.2 Media Playback Support
 -

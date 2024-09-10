@@ -46,8 +46,42 @@
 
 Switching to the 64-bit architecture resolves the JavaFX compatibility issue and enables full integration of the JavaFX GUI for media player applications or other uses.
 
+# 02- Layer Hirarchy (our meta-custom-raspi4)
+![Screenshot from 2024-09-11 01-42-54](https://github.com/user-attachments/assets/d78e13cf-884a-4d3f-b210-1c45fb227cc6)
 
-  
+  ![Screenshot from 2024-09-11 01-27-48](https://github.com/user-attachments/assets/77dcdf34-1ada-4311-a17b-8d37810f497d)
+
+ #### -distro.conf
+ 
+![Screenshot from 2024-09-11 01-50-44](https://github.com/user-attachments/assets/18f712a3-1c48-4770-9a04-03e89ff27bd7)
+### -bsp.bb
+
+![Screenshot from 2024-09-11 01-50-44](https://github.com/user-attachments/assets/057ec51d-646d-41ae-b465-97b02db55744)
+
+### -myimage.bb
+
+  ![Screenshot from 2024-09-11 02-02-07](https://github.com/user-attachments/assets/7a83473d-61bf-4182-a772-302604d786a9)
+
+
+  and  after add the machine in local.conf in the building directorty we bitbake our image and starting our journey
+     to configure it.
+
+# 03-Configure the wifi and developing its service
+
+
+
+# 04-Configure the bluetooth and connecting it with our speaker
+  ## Step 1: Enable Bluetooth Service
+
+   Ensure that the Bluetooth service starts automatically on boot by running the following command:
+
+      ```bash
+      systemctl enable bluetooth
+      ```
+
+# 05-Testing the Audoi in our image 
+
+
      
      
 

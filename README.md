@@ -87,29 +87,87 @@ Install ALSA for audio management:
 IMAGE_INSTALL_append = " alsa-utils"
 ```
 # 3. Remote Control Integration
-3.1 LIRC for IR Remote Control
--
-Install LIRC to handle IR remote control signals:
+---
+## 3.1 Configuring LIRC for JavaFX Interaction
+---
+To enable interaction with your JavaFX GUI using an IR remote, you need to map the IR remote's signals to key events, similar to handling keyboard inputs.
 
-To interact with your JavaFX GUI using a remote control with an IR sensor, you can map the IR remote's signals to key events, similar to how you would handle keyboard inputs
+1. **Interface the IR Sensor:** Connect the IR sensor with your embedded Linux system to capture remote control signals. This requires an IR receiver module and a library like LIRC (Linux Infrared Remote Control) to decode the signals into recognizable inputs.
 
-You'll need to interface the IR sensor with your embedded Linux system to capture the remote control signals.
+2. **Configure LIRC:** Set up LIRC to map specific IR signals to keyboard key events. This allows you to send keypresses to your JavaFX application when specific buttons on the remote are pressed.
 
-This can be done using an IR receiver module and a library like LIRC (Linux Infrared Remote Control) to decode the signals into recognizable inputs.
+## 3.2 Hardware Setup
+---
+- Connect the three pins of the IR sensor: VCC, GND, and the S pin to GPIO pin 18.
+- Navigate to `/boot` and create a `config.txt` file. Define the GPIO pin as an IR pin by adding the following line:
 
-Configure LIRC to map specific IR signals to keyboard key events. This allows you to send keypresses to your JavaFX application when specific buttons on the remote are pressed.
+```bash
+dtoverlay=gpio-ir,gpio_pin=18
 ```
-IMAGE_INSTALL_append = " lirc"
+
+## 3.3 LIRC Configuration
+---
+Include the LIRC device driver in your image configuration:
+
+```bash
+IMAGE_INSTALL:append = " lirc"
+MACHINE_FEATURES:append = " lirc"
+KERNEL_MODULE_AUTOLOAD += "lirc_dev lirc_rpi"
+LIRC_CONF_PATH = "/etc/lirc/lirc.conf"
+ENABLE_IR = "1"
 ```
-Configure LIRC for your specific remote control:
-Create LIRC configuration files mapping remote control buttons to corresponding key presses .
-Ensure these configurations are included in your Yocto image.
 
-3.2 Hardware Setup
--
-Connect the IR receiver to the Raspberry Pi’s GPIO pins.
-Configure the GPIO pins in Yocto if necessary.
+These commands in a Yocto Project build configuration enable support for the Linux Infrared Remote Control (LIRC) subsystem:
 
+1. `IMAGE_INSTALL:append = " lirc"`: Adds the LIRC package to the list of software to be included in the image.
+2. `MACHINE_FEATURES:append = " lirc"`: Adds LIRC support to the machine configuration, indicating the requirement for LIRC hardware or software.
+3. `KERNEL_MODULE_AUTOLOAD += "lirc_dev lirc_rpi"`: Ensures that the LIRC kernel modules (`lirc_dev` and `lirc_rpi`) are automatically loaded at boot.
+4. `LIRC_CONF_PATH = "/etc/lirc/lirc.conf"`: Specifies the path to the LIRC configuration file.
+5. `ENABLE_IR = "1"`: Enables infrared (IR) functionality, likely within the build or runtime configuration.
+
+These settings configure and enable infrared remote control support for your system.
+
+After building your image, it will support IR devices.
+
+1. **Check IR Pulses:** Use the following command to observe IR pulses:
+
+```bash
+mode2 -m -d /dev/lirc1
+```
+![Screenshot from 2024-09-10 18-32-41](https://github.com/user-attachments/assets/90db761d-9cdd-42f5-8636-4d340e7f22a9)
+
+2. **Record IR Signals:** Capture the signals from each button on your IR remote using:
+
+```bash
+irrecord -d /dev/lirc1
+```
+![Screenshot from 2024-09-10 18-38-00](https://github.com/user-attachments/assets/e9ad14f6-f17c-453d-930e-79403ccd80f7)
+
+3. **Place Configuration File:** Move the generated configuration file to:
+
+```bash
+/etc/lirc
+```
+Ensure the file is named `lircd.conf`.
+
+![Screenshot from 2024-09-10 18-41-02](https://github.com/user-attachments/assets/006785ee-1831-4f4c-8ab7-a225b9244925)
+
+4. **Modify LIRC Configuration:** Edit the `lirc_options.conf` file:
+
+- Set the driver to `default`.
+- Set the device to `/dev/lirc1`.
+
+![Screenshot from 2024-09-10 18-43-58](https://github.com/user-attachments/assets/31cdee8d-8394-48fb-958d-f0fd416eb8f2)
+
+5. **Test IR Signals:** Verify that the IR signals are being read with:
+
+```bash
+irw
+```
+
+![Screenshot from 2024-09-10 18-42-25](https://github.com/user-attachments/assets/057bb9c0-29f2-40ee-86c4-3692a02c7cb7)
+
+---
 # 4. Application Deployment
 4.1 Java Application Deployment
 -

@@ -143,6 +143,8 @@ irrecord -d /dev/lirc1
 ```
 ![Screenshot from 2024-09-10 18-38-00](https://github.com/user-attachments/assets/e9ad14f6-f17c-453d-930e-79403ccd80f7)
 
+**problem:** While attempting to capture frames from the IR remote, none of the frames were detected, and the configuration file generated had a value of 0x00 for all keys. We resolved this issue by defining the sbin for the IR to gpio-ir during boot. Additionally, we ensured that the GPIO IR overlays were loaded in /boot/overlays at startup.
+
 **Problem:** After the configuration file is generated, it contains frames with two parts, for example, `0x0864F5987 0xFFFFFFFF`. This is incorrect as only the first part should be present. Therefore, we manually remove the second part, which in my case was `0xFFFFFFFF`.
 
 3. **Place Configuration File:** Move the generated configuration file to:

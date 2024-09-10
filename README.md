@@ -15,7 +15,7 @@ git clone -b kirkstone https://git.yoctoproject.org/git/poky
 cd poky
 git clone -b kirkstone https://github.com/agherzan/meta-raspberrypi.git
 git clone -b kirkstone https://github.com/openembedded/meta-openembedded.git
-git clone -b kirkstone https://github.com/meta-java/meta-java.git
+//git clone -b kirkstone https://github.com/meta-java/meta-java.git --> got problem
 
 
 ```
@@ -52,7 +52,7 @@ BBLAYERS ?= " \
 -
 Add OpenJDK 8 JRE to your Yocto image:
 ```
-IMAGE_INSTALL:append = " openjdk-8" // this has many warnings 31
+IMAGE_INSTALL:append = " openjdk-8" // this has many warnings 31 --> got a problem , look  into yocto folder to know the details
 ```
 https://community.nxp.com/t5/i-MX-Processors-Knowledge-Base/How-to-add-openjdk-to-Yocto-Layers/ta-p/1128283
 ```
@@ -68,13 +68,7 @@ sudo dd if=myimage-raspberrypi4-20240905143444.rootfs.rpi-sdimg of=/dev/sdb bs=4
 ![image](https://github.com/user-attachments/assets/f85e3322-b174-4838-970a-890e4da7b96b)
 
 
-Why OpenJDK 8?
--
-Provides a stable and efficient Java Runtime Environment.
-Ensures compatibility with JavaFX or Swing-based GUI applications.
-Suitable for embedded systems due to its balance between performance and resource usage.
 
-The error you're encountering is likely due to missing JavaFX libraries in your environment. Starting from JDK 11, JavaFX is no longer bundled with the JDK, and needs to be included separately. However, since you're using JDK 8, JavaFX should be bundled, but it seems that the runtime environment isn't correctly locating the JavaFX classes
 
 2.2 Media Playback Support
 -
@@ -175,21 +169,7 @@ irw
 # 4. Application Deployment
 4.1 Java Application Deployment
 -
-Write a Yocto recipe (my-music-player.bb) for your Music Player application:
-```
-SUMMARY = "Music Player Application"
-LICENSE = "CLOSED"
-SRC_URI = "file://my-music-player.jar"
 
-do_install() {
-    install -d ${D}/usr/share/my-music-player
-    install -m 0755 ${WORKDIR}/my-music-player.jar ${D}/usr/share/my-music-player/
-}
-```
-Add the application to your image:
-```
-IMAGE_INSTALL_append = " my-music-player"
-```
 4.2 Autostart Configuration
 -
 Create a systemd service to start your application on boot:
@@ -214,6 +194,172 @@ Build the custom Yocto image for your Raspberry Pi 4:
 ```
 bitbake core-image-sato
 ```
+
+# local.conf
+```
+MACHINE ??= "raspberrypi4-64"
+DISTRO ?= "mediaplayer"
+DL_DIR ?= "/home/yasmen/yocto/poky/build/downloads"
+SSTATE_DIR ?= "/home/yasmen/yocto/poky/build/sstate-cache"
+
+BB_NUMBER_THREADS ?= "8"
+PARALLEL_MAKE ?= "-j 8"
+INHERIT += "rm_work"
+
+# Configure LIRC support
+IMAGE_INSTALL:append = " lirc"
+#MACHINE_FEATURES:append = " lirc"
+#KERNEL_MODULE_AUTOLOAD += "lirc_dev lirc_rpi"
+#LIRC_CONF_PATH = "/etc/lirc/lirc.conf"
+ENABLE_IR = "1"
+
+```
+
+# Hierarchy
+
+![image](https://github.com/user-attachments/assets/465d796f-d481-4b03-882e-446912414fd5)
+
+![image](https://github.com/user-attachments/assets/4c1e266d-69e3-482c-b8da-d3ab994bd702)
+
+![image](https://github.com/user-attachments/assets/63a4881e-a071-42a1-9e8f-fa6fa4144c68)
+
+mediaplayer.conf
+-
+```
+DISTRO_FEATURES:append = " systemd x11 wayland opengl gtk3 gnome dbus"
+DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+VIRTUAL-RUNTIME_init_manager = "systemd"
+VIRTUAL-RUNTIME_initscripts = "systemd-compat-units"
+#VIRTUAL-RUNTIME_initscripts = ""
+VIRTUAL-RUNTIME_dev_manager = "systemd"
+```
+![image](https://github.com/user-attachments/assets/89221680-7fbf-4a0f-9bbb-faf917535740)
+
+![image](https://github.com/user-attachments/assets/f6110e43-d35c-4ad1-be0e-71c081e6d2a4)
+
+myimage.bb
+-
+
+```
+DESCRIPTION = "Image with Sato, a mobile environment and visual style for \
+mobile devices. The image supports X11 with a Sato theme, Pimlico \
+applications, and contains terminal, editor, and file manager."
+HOMEPAGE = "https://www.yoctoproject.org/"
+
+IMAGE_FEATURES += "splash package-management x11-base x11-sato hwcodecs"
+
+LICENSE = "MIT"
+
+inherit core-image
+
+
+TOOLCHAIN_HOST_TASK:append = " nativesdk-intltool nativesdk-glib-2.0"
+TOOLCHAIN_HOST_TASK:remove:task-populate-sdk-ext = " nativesdk-intltool nativesdk-glib-2.0"
+
+QB_MEM = '${@bb.utils.contains("DISTRO_FEATURES", "opengl", "-m 512", "-m 256", d)}'
+QB_MEM:qemuarmv5 = "-m 256"
+QB_MEM:qemumips = "-m 256"
+
+
+PACKAGE_CLASSES ?= "package_rpm opkg"
+IMAGE_INSTALL:append = " opkg"
+
+#DISTRO_FEATURES:append = " systemd x11 wayland opengl gtk3 gnome dbus"
+#DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+#VIRTUAL-RUNTIME_init_manager = "systemd"
+#VIRTUAL-RUNTIME_initscripts = "systemd-compat-units"
+#VIRTUAL-RUNTIME_initscripts = ""
+#VIRTUAL-RUNTIME_dev_manager = "systemd"
+IMAGE_INSTALL += " packagegroup-core-boot"
+IMAGE_ROOTFS_EXTRA_SPACE = "5242880"
+IMAGE_INSTALL:append = " x11vnc"
+
+
+#MP3 Config
+IMAGE_INSTALL:append = " gstreamer1.0-plugins-good gstreamer1.0-plugins-base gstreamer1.0-plugins-ugly mpg123"
+LICENSE_FLAGS_ACCEPTED:append = " commercial commercial_gstreamer1.0-plugins-ugly"
+PACKAGECONFIG:pn-qtmultimedia = " gstreamer alsa" 
+
+#stream mp3 by blutooth
+DISTRO_FEATURES:append = " pulseaudio"
+KERNEL_MODULE_AUTOLOAD:rpi = "snd-bcm2835"
+MACHINE_FEATURES:append = " sound"
+IMAGE_INSTALL:append = " pulseaudio pulseaudio-module-dbus-protocol pulseaudio-server pulseaudio-module-bluetooth-discover pulseaudio-module-bluetooth-policy pulseaudio-module-bluez5-device pulseaudio-module-bluez5-discover alsa-utils alsa-lib alsa-plugins mpg123 alsa-tools alsa-state dbus"
+
+#for debugging 
+IMAGE_INSTALL:append = " strace"
+#IMAGE_INSTALL:remove = "packagegroup-core-ssh-dropbear"
+#EXTRA_IMAGE_FEATURES += "allow-empty-password allow-root-login ssh-server-openssh"
+
+
+
+
+
+
+#for blutooth and Wifi
+
+IMAGE_INSTALL:append = " \
+    python3 \
+    bluez5 \
+    i2c-tools \
+    bridge-utils \
+    hostapd \
+    iptables \
+    wpa-supplicant \
+    pi-bluetooth \
+    bluez5-testtools \
+    udev-rules-rpi \
+    linux-firmware \
+    iw \
+    kernel-modules \
+    linux-firmware-ralink \
+    linux-firmware-rtl8192ce \
+    linux-firmware-rtl8192cu \
+    linux-firmware-rtl8192su \
+    linux-firmware-rpidistro-bcm43430 \
+    linux-firmware-bcm43430 \
+    connman \
+    connman-client \
+    dhcpcd \
+    openssh \
+    psplash \
+    psplash-raspberrypi \
+"
+
+
+DISTRO_FEATURES:append = " \
+    bluez5 \
+    bluetooth \
+    wifi \
+    pi-bluetooth \
+    linux-firmware-bcm43430 \
+    systemd \
+    usrmerge \
+    ipv4 \
+"
+MACHINE_FEATURES:append = " \
+    bluetooth \
+    wifi \
+"
+
+IMAGE_FEATURES:append = " \
+    splash \
+"
+IMAGE_INSTALL:append = " xserver-xorg xinit xf86-video-fbdev xf86-input-evdev xterm matchbox-wm"
+
+EXTRA_IMAGE_FEATURES += "tools-debug"
+IMAGE_INSTALL:append = " libavcodec libavformat libavutil libswscale"
+IMAGE_INSTALL:append = " ffmpeg"
+
+
+
+IMAGE_FSTYPES = "tar.bz2 ext4 rpi-sdimg"
+```
+
+
+
+
+
 
 
 

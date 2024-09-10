@@ -70,14 +70,70 @@ Switching to the 64-bit architecture resolves the JavaFX compatibility issue and
 
 
 
-# 04-Configure the bluetooth and connecting it with our speaker
-  ## Step 1: Enable Bluetooth Service
+# 04-Configure the bluetooth and connecting it with our speaker:
 
-   Ensure that the Bluetooth service starts automatically on boot by running the following command:
+Bluetooth Audio Configuration on Yocto for Raspberry Pi
+This guide explains how to configure a Bluetooth speaker as the audio output on a Yocto-based Raspberry Pi system using PulseAudio and BlueZ (Bluetooth stack). Follow these steps to pair your speaker and route audio to it.
 
-      ```bash
-      systemctl enable bluetooth
-      ```
+### Prerequisites:
+Ensure that your Yocto image includes the following packages:
+
+Bluetooth Stack: bluez5, bluez5-utils, bluez5-alsa, bluez5-audio
+Audio Management: pulseaudio, pulseaudio-bluetooth, alsa-lib, alsa-utils
+Make sure these packages are added to your image recipe:
+
+```bass
+IMAGE_INSTALL_append = " bluez5 bluez5-utils bluez5-alsa bluez5-audio pulseaudio pulseaudio-bluetooth alsa-lib alsa-utils"
+```
+## Step 1: Enable Bluetooth Service
+Ensure the Bluetooth service starts on boot:
+
+``bash
+systemctl enable bluetooth
+```
+## Step 2: Pairing and Connecting Bluetooth Speaker
+Open Bluetooth control:
+```bash
+bluetoothctl
+```
+## Power on the Bluetooth controller:
+```bash
+power on
+```
+## Start scanning for nearby Bluetooth devices:
+
+```bash
+scan on
+```
+Identify your Bluetooth speaker and note the MAC address (e.g., F4:4E:FD:52:2D:6D).
+
+## Pair the speaker:
+
+```bash
+pair <MAC address of your speaker>
+```
+If you get an org.bluez.Error.AlreadyExists error, remove the existing pairing:
+
+```bash
+remove <MAC address of your speaker>
+pair <MAC address of your speaker>
+```
+## Connect the Bluetooth speaker:
+
+```bash
+connect <MAC address of your speaker>
+```
+## Trust the device for automatic reconnection:
+
+```bash
+trust <MAC address of your speaker>
+```
+## Verify the connection: After connecting, verify that the speaker is connected:
+
+```bash
+info <MAC address of your speaker>
+```
+Ensure the Connected field shows yes.
 
 # 05-Testing the Audoi in our image 
 

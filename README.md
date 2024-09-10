@@ -27,7 +27,7 @@ source oe-init-build-env
 ```
 In conf/local.conf, set the machine to Raspberry Pi 4:
 ```
-MACHINE = "raspberrypi4"
+MACHINE = "raspberrypi4-64"
 ```
 Add the necessary layers in bblayers.conf:
 

@@ -21,7 +21,16 @@
  /ABSOLUTE/PATH/meta-openembedded/meta-multimedia \
  "
 ```
- 
+# PROBLEMS
+
+To integrate Java with Yocto for your media player application:
+-
+Architecture Compatibility: Since JavaFX is only available for 64-bit ARM and not 32-bit, switch your Yocto target architecture to ARM64 (e.g., raspberrypi4-64).
+Java Version: meta-java supports OpenJDK, but for JDK 17, you'll need to manually add or modify recipes in your Yocto build.
+JavaFX: Ensure your image has the necessary dependencies (OpenGL, X11/Wayland) for JavaFX support.
+
+
+  
      
      
 

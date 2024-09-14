@@ -1,0 +1,10 @@
+/* Default image style */
+img {
+  transition: 0.3s; /* Smooth transition for the hover effect */
+}
+
+/* Hover effect */
+img:hover {
+  filter: brightness(1.2); /* Lightens the image */
+  font-weight: bold; /* Makes the font bold if there's any text over the image */
+}

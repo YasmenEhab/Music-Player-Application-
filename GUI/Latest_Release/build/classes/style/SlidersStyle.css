@@ -1,0 +1,51 @@
+/* Base style for the slider */
+.slider {
+    -fx-background-color: #290405; /* Dark red background */
+    -fx-background-radius: 30 30 30 30;
+}
+
+/* Style for the slider when hovered */
+.slider:hover {
+    -fx-background-color: #a50b0b; /* Lighter red when hovered */
+    -fx-background-radius: 30 30 30 30;
+}
+
+/* Style for the slider when pressed */
+.slider:pressed {
+    -fx-background-color: #7e1f1f; /* Darker red when pressed */
+    -fx-background-radius: 30 30 30 30;
+}
+
+/* Style for the slider track (the line on which the thumb slides) */
+.slider .track {
+    -fx-background-color: #8B0000;  /* Dark red color */
+    -fx-background-radius: 5;
+    -fx-padding: 0.25em;
+}
+
+/* Style for the slider thumb (the draggable part) */
+.slider .thumb {
+    -fx-background-color: #8B0000;  /* Dark red color */
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
+}
+
+/* Style for the slider thumb when hovered */
+.slider .thumb:hover {
+    -fx-background-color: #a50b0b;  /* Lighter red when thumb is hovered */
+}
+
+/* Style for the slider thumb when pressed */
+.slider .thumb:pressed {
+    -fx-background-color: #7e1f1f;  /* Darker red when thumb is pressed */
+}
+
+/* Style for the slider tick marks */
+.slider .tick-mark {
+    -fx-stroke: #8B0000;  /* Dark red color */
+}
+
+/* Style for the slider tick labels */
+.slider .tick-label {
+    -fx-text-fill: #8B0000;  /* Dark red color */
+}

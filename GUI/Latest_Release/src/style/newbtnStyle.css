@@ -1,0 +1,33 @@
+/* Default transparent button style */
+.button {
+    -fx-background-color: transparent;  /* Makes the button background transparent */
+    -fx-border-color: #ce9595;          /* Sets a border color */
+    -fx-border-width: 3px;              /* Sets a bolder border width */
+    -fx-text-fill: #007bff;             /* Text color */
+    -fx-padding: 10px 20px;             /* Button padding for size */
+    -fx-font-size: 14px;                /* Font size */
+    -fx-cursor: hand;                   /* Changes cursor to hand on hover */
+    -fx-background-radius: 5px;         /* Rounded corners */
+    -fx-border-radius: 5px;             /* Rounded border */
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0); /* Removes any default shadow */
+    -fx-focus-color: transparent;       /* Remove default focus color */
+    -fx-faint-focus-color: transparent; /* Remove default faint focus color */
+}
+
+/* Button hover effect (optional) */
+.button:hover {
+    -fx-background-color: rgba(0, 123, 255, 0.1);  /* Adds a light blue hover background */
+}
+
+/* Button pressed effect */
+.button:pressed {
+    -fx-background-color: transparent;             /* Keeps the background transparent */
+    -fx-translate-y: 2px;                          /* Moves the button slightly downwards */
+    -fx-scale-x: 0.98;                             /* Slightly shrinks the button horizontally */
+    -fx-scale-y: 0.98;                             /* Slightly shrinks the button vertically */
+}
+/* Button effect when any key is pressed */
+.button:focused {
+    -fx-scale-x: 0.98;                             /* Slightly shrinks the button horizontally */
+    -fx-scale-y: 0.98;                             /* Slightly shrinks the button vertically */
+}

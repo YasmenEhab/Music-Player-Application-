@@ -1,0 +1,8 @@
+/* Style for a JavaFX Label */
+.label {
+    -fx-font-family: "Segoe UI", "Righteous", sans-serif; /* Sets a good, modern font */
+    -fx-font-size: 35px;                              /* Sets the font size */
+    -fx-font-weight: bold;                             /* Makes the text bold */
+    -fx-text-fill: #808080;                            /* Sets the text color to grey */
+    -fx-padding: 5px 10px;                             /* Adds padding around the label */
+}

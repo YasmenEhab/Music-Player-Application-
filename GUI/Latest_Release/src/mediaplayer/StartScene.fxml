@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" fx:id="startpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mediaplayer.StartSceneController">
+   <children>
+      <ImageView fx:id="startbg" fitHeight="1096.0" fitWidth="1848.0" layoutX="2.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Images/file.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="58.0" fitWidth="131.0" layoutX="788.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Images/Luxoft,_a_DXC_Technology_Company.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="68.0" fitWidth="140.0" layoutX="-18.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="-18.0" AnchorPane.topAnchor="-2.0">
+         <image>
+            <Image url="@../Images/iti_logo.5b9a0fd125be-300x133.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="492.0" layoutY="306.0" prefHeight="85.0" prefWidth="245.0" stylesheets="@../style/fontStyle.css" text="Media Player" AnchorPane.leftAnchor="492.0" AnchorPane.topAnchor="306.0">
+         <effect>
+            <Glow>
+               <input>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </input>
+            </Glow>
+         </effect>
+      </Label>
+   </children>
+</AnchorPane>

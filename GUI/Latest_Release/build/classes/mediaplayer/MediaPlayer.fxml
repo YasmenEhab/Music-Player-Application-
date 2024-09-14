@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mediaplayer.MediaPlayerController">
+   <center>
+      <StackPane fx:id="pane" prefHeight="810.0" prefWidth="1180.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="bgimg" fitHeight="857.0" fitWidth="1256.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/download%20(3).jpeg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="438.0" fitWidth="500.0" opacity="0.18" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/31eec88257a414b8f38085f939c6c522.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="sngimg" fitHeight="302.0" fitWidth="325.0" pickOnBounds="true" preserveRatio="true" />
+            <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" />
+            <VBox alignment="BOTTOM_CENTER" maxHeight="40.0" prefHeight="50.0" StackPane.alignment="BOTTOM_CENTER">
+               <children>
+                  <Slider fx:id="progressBar" stylesheets="@SlidersStyle.css" />
+                  <HBox alignment="BOTTOM_CENTER" maxHeight="60.0" prefHeight="28.0" prefWidth="606.0" spacing="15.0">
+                     <children>
+                        <ImageView fitHeight="34.0" fitWidth="38.0" onMousePressed="#previousImgMouse" onTouchPressed="#previousImgTouch" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/icons8-prev-64.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="38.0" fitWidth="55.0" onMousePressed="#back5ImgMouse" onTouchPressed="#back5ImgTouch" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/icons8-replay-5-64.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="playimg" fitHeight="39.0" fitWidth="39.0" onMouseClicked="#playImgMouse" onTouchPressed="#playImgTouch" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/icons8-play-48.png" />
+                           </image>
+                           <effect>
+                              <DropShadow blurType="ONE_PASS_BOX" color="#57575700" height="35.83" radius="12.965" spread="0.08" width="18.03" />
+                           </effect>
+                        </ImageView>
+                        <ImageView fx:id="pauseimg" fitHeight="39.0" fitWidth="40.0" onMousePressed="#pauseImgMouse" onTouchPressed="#pauseImgTouch" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/icons8-pause-64.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="40.0" fitWidth="38.0" onMousePressed="#skip5ImgMouse" onTouchPressed="#skip5ImgTouch" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/icons8-forward-5-96.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="35.0" fitWidth="44.0" onMousePressed="#nextImgMouse" onTouchPressed="#nextImgTouch" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/icons8-forward-64.png" />
+                           </image>
+                        </ImageView>
+                        <Slider fx:id="volumeSlider" stylesheets="@SlidersStyle.css">
+                           <HBox.margin>
+                              <Insets bottom="10.0" />
+                           </HBox.margin>
+                        </Slider>
+                        <ImageView fitHeight="37.0" fitWidth="41.0" onMouseClicked="#resetImgMouse" onTouchPressed="#resetImgTouch" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/icons8-undo-48%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </VBox>
+            <Label fx:id="songname" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" prefHeight="427.0" prefWidth="358.0" textAlignment="RIGHT" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>

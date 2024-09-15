@@ -17,5 +17,10 @@ This is the new implementation that replaces the previous Python-based method. W
 
 - **Note**: You don’t need to take any action with this file or place it in a specific location. The code is already integrated into our media player application, so when you run the application, the IR functionality will work automatically.
 
+### config.txt
+
+This file contains the GPIO pin configuration for the IR setup. You must take the content of this file and append it to the existing `config.txt` file located in the `boot` directory of your image. **Do not delete the original content** in the `config.txt` file, as replacing it could lead to unexpected behavior. Instead, append the content to avoid any issues. To do this, navigate to the `boot` partition of your image and find the existing `config.txt` file, then append the content of our file to it.
+
 ---
+
 

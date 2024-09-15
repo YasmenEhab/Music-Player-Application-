@@ -1,42 +1,21 @@
-# Research IR Sensor Compatibility
-Investigate how to connect and read input from an IR sensor on the Raspberry Pi.
-The IR Sensor Module has only three Pins: VCC, GND and Data. Connect the VCC and GND pins of the IR Sensor to +5V and GND pins of the Raspberry Pi.
-Then connect the Data pin of the IR Sensor to GPIO23 i.e. Physical Pin 16 of the Raspberry Pi.
+# Directory Contents Description
 
-On a Raspberry Pi, the GPIO pins can be used to both send and receive IR signals.
+### lircd.conf
 
- Receiving IR Signals (IR Sensor)
- -
-You can use any GPIO pin to receive IR signals from an IR sensor (e.g., TSOP4838), but commonly used GPIO pins for receiving IR signals are:
-GPIO 18 (Physical Pin 12): This is commonly used because it has hardware PWM support, which may help in decoding the IR signals.
-GPIO 17 (Physical Pin 11)
-GPIO 23 (Physical Pin 16)
+This is the configuration file for the IR remote. It contains all the buttons and their signal frames. It must be located under `/etc/lircd`. 
 
-# Write IR Sensor Input Handling Code
-Implement code to capture input from the IR remote.
+- **Important note**: Do not modify this file, change its name, or move it from this path. Any of these actions will cause the IR remote to malfunction.
 
-Installing Necessary Software
-The software package ir-keytable is installed to handle parsing and mapping raw IR signals to user-defined keys. This will help detect the IR signals from your remote control and map those to control actions (play, pause, next, etc.).
-Additionally, the article recommends installing LIRC (Linux Infrared Remote Control), which allows receiving, decoding, and sending IR commands. This is crucial for both sending and receiving commands in your Media Player project.
+### keyboard-ir-(deprecated).service  
+### keyboard-ir-binding-(deprecated).py
 
-irw is a utility that comes with LIRC (Linux Infrared Remote Control). It is used to monitor and display IR signals received by the IR receiver connected to your Raspberry Pi. When you run irw, it listens for signals from the IR receiver and prints the decoded key presses to the terminal.
-Start LIRC Service: Ensure that the LIRC daemon (lircd) is running. If it’s not running, you can start it with:
-```
-ps aux
-sudo systemctl start lircd
-sudo irw
-```
-Output: When you press a button on your remote control, irw will show something like:
-```
-0000000000000001 KEY_PLAY
-```
-# Map Remote Control to GUI Functions
-Map IR remote buttons to media control actions (play, pause, next track, etc.).
+Initially, we implemented IR signal mapping with a Python script named `keyboard-ir-binding-(deprecated).py` and developed a service `keyboard-ir-(deprecated).service`to run it continuously as a daemon process at boot. However, this method is now deprecated, as we've shifted to a more efficient solution. These files are no longer needed for the project, but you can still review them for reference.
 
-Creating Remote Control Configuration
-The irrecord command allows you to map raw IR signals to meaningful names (such as "play" or "pause"). This is key to mapping the remote control buttons to the appropriate media player actions.
+### RemoteControlMapper.java
 
-# Test Remote Control Integration
-Test the remote control with the media player GUI.
+This is the new implementation that replaces the previous Python-based method. We developed a Java class that implements `Runnable` to be run as a thread. It listens for IR signals and maps them to keyboard presses using the `Robot` class in Java. This method is more efficient since our application is already developed in Java. As a result, we don't need a separate service to run the code during every reboot or have it running continuously when the application isn't open. Additionally, there is no need for a daemon process—when the media player app starts, the thread will also start and terminate when finished.
 
-https://www.digikey.pl/pl/maker/tutorials/2021/how-to-send-and-receive-ir-signals-with-a-raspberry-pi
+- **Note**: You don’t need to take any action with this file or place it in a specific location. The code is already integrated into our media player application, so when you run the application, the IR functionality will work automatically.
+
+---
+

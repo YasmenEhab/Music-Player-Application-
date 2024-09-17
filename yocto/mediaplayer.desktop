@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/root/app
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=MediaPlayer
+Comment=Start MediaPlayer Application Automatically
+
